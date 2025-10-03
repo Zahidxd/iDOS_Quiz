@@ -53,9 +53,17 @@
       color:#fff;z-index:3;text-align:center;
     }
     #congrats h2{font-size:32px;margin-bottom:12px;}
-    #congrats img{width:80px;height:80px;border-radius:50%;margin:12px 0;box-shadow:0 0 15px #fff;}
-    #congrats a{color:#fff;background:#1DA1F2;padding:8px 14px;
-      border-radius:8px;text-decoration:none;font-weight:600;display:inline-block;margin-top:10px;}
+    #congrats p{margin:6px 0;}
+    .profile{
+      display:flex;align-items:center;gap:10px;justify-content:center;margin-top:12px;
+    }
+    .profile img{
+      width:60px;height:60px;border-radius:50%;box-shadow:0 0 12px #fff;
+    }
+    .profile a{
+      color:#fff;background:#1DA1F2;padding:6px 12px;
+      border-radius:8px;text-decoration:none;font-weight:600;
+    }
   </style>
 </head>
 <body>
@@ -79,9 +87,19 @@
   <div id="congrats">
     <h2>🎉 Congratulations! 🎉</h2>
     <p>You answered all questions correctly.</p>
-    <img src="https://pbs.twimg.com/profile_images/1673279902682857472/0K6tKz9A_400x400.jpg" alt="Profile">
-    <p>Follow me for more iDOS ideas 👇</p>
-    <a href="https://x.com/yourhandle" target="_blank">@yourhandle</a>
+    <p>Follow for more iDOS ideas 👇</p>
+
+    <!-- Your Profile -->
+    <div class="profile">
+      <img src="https://pbs.twimg.com/profile_images/1827680381667682304/g7NEz8aC_400x400.jpg" alt="Zahid Kashan">
+      <a href="https://x.com/ZahidKashan_" target="_blank">@ZahidKashan_</a>
+    </div>
+
+    <!-- idOS Profile -->
+    <div class="profile">
+      <img src="https://pbs.twimg.com/profile_images/1711744797648541696/l1vB3w9P_400x400.jpg" alt="idOS">
+      <a href="https://x.com/idOS_network" target="_blank">@idOS_network</a>
+    </div>
   </div>
 
   <script>
@@ -93,7 +111,6 @@
       {q:"5. What feature is enabled by XRPL Credentials?",opts:["Real-time gaming","On-chain authorization tied to identity credentials","Free transactions","Unlimited storage"],ans:1}
     ];
     let current=0;
-    let correctCount=0;
 
     const qnum=document.getElementById("qnum");
     const qEl=document.getElementById("question");
@@ -121,7 +138,6 @@
       if(i===q.ans){
         optsEl.children[i].classList.add("correct");
         resEl.textContent="✅ Correct";
-        correctCount++;
         setTimeout(()=>{
           if(current<quizData.length-1){current++;loadQ();}
           else showCongrats();
