@@ -12,12 +12,18 @@
       background-size:400% 400%;
       animation: gradientBG 12s ease infinite;
       overflow:hidden;
+      flex-direction:column;
     }
     @keyframes gradientBG {
       0%{background-position:0% 50%;}
       50%{background-position:100% 50%;}
       100%{background-position:0% 50%;}
     }
+    header {
+      position:absolute; top:10px; display:flex; align-items:center; gap:10px;
+      color:#fff; font-weight:bold; font-size:20px;
+    }
+    header img {width:40px;height:40px;border-radius:8px;}
     .floating {
       position:absolute; width:60px; opacity:0.15;
       animation: float 20s linear infinite;
@@ -67,6 +73,12 @@
   </style>
 </head>
 <body>
+  <!-- Header with idOS logo -->
+  <header>
+    <img src="https://idos.network/favicon-32x32.png" alt="idOS">
+    <span>idOS Quiz</span>
+  </header>
+
   <!-- Floating logos -->
   <img src="https://idos.network/favicon-32x32.png" class="floating" style="left:10%;animation-duration:22s;">
   <img src="https://idos.network/favicon-32x32.png" class="floating" style="left:40%;animation-duration:18s;">
@@ -144,8 +156,16 @@
         },1000);
       } else {
         optsEl.children[i].classList.add("wrong");
-        resEl.textContent="❌ Wrong — try again in 5s";
-        setTimeout(()=>{loadQ();},5000);
+        let countdown=5;
+        resEl.textContent=`❌ Wrong — try again in ${countdown}s`;
+        let timer=setInterval(()=>{
+          countdown--;
+          resEl.textContent=`❌ Wrong — try again in ${countdown}s`;
+          if(countdown===0){
+            clearInterval(timer);
+            loadQ();
+          }
+        },1000);
       }
     }
 
