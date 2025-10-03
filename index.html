@@ -1,182 +1,198 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>idOS Blog Quiz</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>idOS Quiz</title>
   <style>
     body {
-      margin:0; padding:0; font-family:'Segoe UI',sans-serif;
-      height:100vh; display:flex; justify-content:center; align-items:center;
-      background: linear-gradient(135deg, #2b6ef6, #6a11cb, #2575fc);
-      background-size:400% 400%;
-      animation: gradientBG 12s ease infinite;
-      overflow:hidden;
-      flex-direction:column;
-    }
-    @keyframes gradientBG {
-      0%{background-position:0% 50%;}
-      50%{background-position:100% 50%;}
-      100%{background-position:0% 50%;}
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #0a0a0a url('12.jpg') repeat;
+      background-size: 150px;
+      color: white;
+      text-align: center;
     }
     header {
-      position:absolute; top:10px; left:10px;
-      display:flex; align-items:center; gap:10px;
-      color:#fff; font-weight:bold; font-size:20px;
-      z-index:10;
+      background: rgba(0,0,0,0.8);
+      padding: 15px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      border-bottom: 2px solid #00ffb0;
     }
-    header img {width:40px;height:40px;border-radius:8px;}
-    .floating {
-      position:absolute; width:60px; opacity:0.15;
-      animation: float 20s linear infinite;
+    header img {
+      height: 50px;
+      border-radius: 8px;
     }
-    @keyframes float {
-      from { transform: translateY(110vh) rotate(0deg); }
-      to { transform: translateY(-120vh) rotate(360deg); }
+    .quiz-container {
+      margin: 30px auto;
+      max-width: 600px;
+      background: rgba(0,0,0,0.8);
+      padding: 25px;
+      border-radius: 15px;
+      box-shadow: 0px 0px 20px #00ffb0;
     }
-    .card {
-      width:90%; max-width:700px; padding:28px;
-      border-radius:16px; background:rgba(255,255,255,0.15);
-      box-shadow:0 8px 32px rgba(0,0,0,0.2);
-      backdrop-filter:blur(12px); color:#fff;
-      z-index:2; text-align:center;
+    .question {
+      font-size: 20px;
+      margin-bottom: 15px;
     }
-    h1{margin:0;font-size:24px;}
-    .question{font-weight:600;margin:18px 0 12px;font-size:18px;}
-    .options{display:grid;gap:12px;}
-    .opt{
-      padding:12px;border-radius:8px;cursor:pointer;
-      background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.3);
-      transition:0.3s;
+    .options button {
+      display: block;
+      width: 100%;
+      margin: 10px 0;
+      padding: 12px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      background: #111;
+      color: white;
+      font-size: 16px;
+      transition: 0.3s;
     }
-    .opt:hover{background:rgba(255,255,255,0.25);}
-    .opt.correct{background:rgba(46,204,113,0.5);border-color:#2ecc71;}
-    .opt.wrong{background:rgba(255,99,71,0.5);border-color:#ff6b6b;}
-    .opt.disabled{pointer-events:none;opacity:.7;}
-    #result{margin-top:14px;font-size:16px;font-weight:bold;}
-    .hidden{display:none;}
-    /* Congrats Page */
-    #congrats{
-      display:none;flex-direction:column;align-items:center;justify-content:center;
-      color:#fff;z-index:3;text-align:center;
+    .options button:hover {
+      background: #00ffb0;
+      color: black;
     }
-    #congrats h2{font-size:32px;margin-bottom:12px;}
-    #congrats p{margin:6px 0;}
-    .profile{
-      display:flex;align-items:center;gap:10px;justify-content:center;margin-top:12px;
+    #timer {
+      font-size: 18px;
+      margin-top: 15px;
+      color: #ff4444;
     }
-    .profile img{
-      width:60px;height:60px;border-radius:50%;box-shadow:0 0 12px #fff;
+    #congrats {
+      display: none;
+      margin-top: 30px;
+      padding: 20px;
+      border-radius: 15px;
+      background: rgba(0,0,0,0.8);
+      box-shadow: 0px 0px 25px #00ffb0;
     }
-    .profile a{
-      color:#fff;background:#1DA1F2;padding:6px 12px;
-      border-radius:8px;text-decoration:none;font-weight:600;
+    #congrats h1 {
+      font-size: 32px;
+      color: #00ffb0;
+    }
+    .profile {
+      margin: 20px;
+      display: inline-block;
+      text-align: center;
+    }
+    .profile img {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      margin-bottom: 8px;
+      border: 2px solid #00ffb0;
+    }
+    .profile a {
+      display: block;
+      color: #00ffb0;
+      font-weight: bold;
+      text-decoration: none;
     }
   </style>
 </head>
 <body>
+
   <!-- Header with idOS logo -->
   <header>
-    <img src="https://pbs.twimg.com/profile_images/1711744797648541696/l1vB3w9P_400x400.jpg" alt="idOS Logo">
+    <img src="12.jpg" alt="idOS Logo">
     <span>idOS Quiz</span>
   </header>
 
-  <!-- Floating logos -->
-  <img src="https://pbs.twimg.com/profile_images/1711744797648541696/l1vB3w9P_400x400.jpg" class="floating" style="left:10%;animation-duration:22s;">
-  <img src="https://pbs.twimg.com/profile_images/1711744797648541696/l1vB3w9P_400x400.jpg" class="floating" style="left:40%;animation-duration:18s;">
-  <img src="https://pbs.twimg.com/profile_images/1711744797648541696/l1vB3w9P_400x400.jpg" class="floating" style="left:70%;animation-duration:25s;">
-  <img src="https://pbs.twimg.com/profile_images/1711744797648541696/l1vB3w9P_400x400.jpg" class="floating" style="left:85%;animation-duration:30s;">
-  <img src="https://pbs.twimg.com/profile_images/1711744797648541696/l1vB3w9P_400x400.jpg" class="floating" style="left:55%;animation-duration:28s;">
-
-  <!-- Quiz Card -->
-  <div class="card" id="quizCard">
-    <h1>idOS Blog Quiz</h1>
-    <div id="qnum" class="progress"></div>
-    <div id="question" class="question"></div>
-    <div id="options" class="options"></div>
-    <div id="result"></div>
+  <!-- Quiz Container -->
+  <div class="quiz-container" id="quiz">
+    <div class="question" id="question"></div>
+    <div class="options" id="options"></div>
+    <div id="timer"></div>
   </div>
 
-  <!-- Congrats Page -->
+  <!-- Congratulations Page -->
   <div id="congrats">
-    <h2>🎉 Congratulations! 🎉</h2>
-    <p>You answered all questions correctly.</p>
-    <p>Follow for more iDOS ideas 👇</p>
+    <h1>🎉 Congratulations 🎉</h1>
+    <p>You completed the iDOS Quiz successfully!</p>
 
     <!-- Your Profile -->
     <div class="profile">
-      <img src="https://pbs.twimg.com/profile_images/1827680381667682304/g7NEz8aC_400x400.jpg" alt="Zahid Kashan">
+      <img src="zahid.jpg" alt="Zahid Kashan">
       <a href="https://x.com/ZahidKashan_" target="_blank">@ZahidKashan_</a>
     </div>
 
     <!-- idOS Profile -->
     <div class="profile">
-      <img src="https://pbs.twimg.com/profile_images/1711744797648541696/l1vB3w9P_400x400.jpg" alt="idOS">
+      <img src="12.jpg" alt="idOS Logo">
       <a href="https://x.com/idOS_network" target="_blank">@idOS_network</a>
     </div>
   </div>
 
-  <script>
-    const quizData=[
-      {q:"1. What is the purpose of the IDOS token?",opts:["To play games","To store photos","Utility and community incentives in idOS network","To send emails"],ans:2},
-      {q:"2. How is idOS ensuring user data privacy?",opts:["Storing all data publicly","Encrypting data with keys only user has","Letting third parties control user data","Deleting data after 24h"],ans:1},
-      {q:"3. What cryptographic method is idOS using with Partisia?",opts:["Symmetric encryption","Blockchain mining","Multi-Party Computation (MPC)","Plaintext storage"],ans:2},
-      {q:"4. Which blockchain deployment is IDOS first launched on?",opts:["Bitcoin","Arbitrum One","Solana","Polkadot"],ans:1},
-      {q:"5. What feature is enabled by XRPL Credentials?",opts:["Real-time gaming","On-chain authorization tied to identity credentials","Free transactions","Unlimited storage"],ans:1}
-    ];
-    let current=0;
+<script>
+const quizData = [
+  {
+    question: "What does idOS primarily focus on?",
+    options: ["DeFi Staking", "Identity & Data Ownership", "NFT Trading", "Blockchain Gaming"],
+    answer: 1
+  },
+  {
+    question: "Which technology powers idOS?",
+    options: ["AI only", "Decentralized Identity + Web3", "Just Bitcoin", "Traditional Databases"],
+    answer: 1
+  },
+  {
+    question: "What is idOS’s mission?",
+    options: ["Centralize user data", "Decentralized ownership & control", "Only payments", "Gaming only"],
+    answer: 1
+  },
+  {
+    question: "idOS empowers users to control their?",
+    options: ["Bank accounts", "On-chain identity & data", "Social media", "Emails"],
+    answer: 1
+  },
+  {
+    question: "Which ecosystem integrates idOS?",
+    options: ["Ethereum & Web3 projects", "Only Google Cloud", "Web2 only", "Gaming consoles"],
+    answer: 0
+  }
+];
 
-    const qnum=document.getElementById("qnum");
-    const qEl=document.getElementById("question");
-    const optsEl=document.getElementById("options");
-    const resEl=document.getElementById("result");
-    const quizCard=document.getElementById("quizCard");
-    const congrats=document.getElementById("congrats");
+let currentQ = 0;
+let timer;
 
-    function loadQ(){
-      const q=quizData[current];
-      qnum.textContent=`Question ${current+1} of ${quizData.length}`;
-      qEl.textContent=q.q;
-      optsEl.innerHTML=""; resEl.textContent="";
-      q.opts.forEach((opt,i)=>{
-        let d=document.createElement("div");
-        d.className="opt"; d.textContent=opt; d.dataset.i=i;
-        d.onclick=()=>select(i);
-        optsEl.appendChild(d);
-      });
-    }
+function loadQuestion() {
+  if(currentQ < quizData.length) {
+    document.getElementById("question").innerText = quizData[currentQ].question;
+    let optionsHtml = "";
+    quizData[currentQ].options.forEach((opt, i) => {
+      optionsHtml += `<button onclick="checkAnswer(${i})">${opt}</button>`;
+    });
+    document.getElementById("options").innerHTML = optionsHtml;
+    document.getElementById("timer").innerText = "";
+  } else {
+    document.getElementById("quiz").style.display = "none";
+    document.getElementById("congrats").style.display = "block";
+  }
+}
 
-    function select(i){
-      const q=quizData[current];
-      [...optsEl.children].forEach(el=>el.classList.add("disabled"));
-      if(i===q.ans){
-        optsEl.children[i].classList.add("correct");
-        resEl.textContent="✅ Correct";
-        setTimeout(()=>{
-          if(current<quizData.length-1){current++;loadQ();}
-          else showCongrats();
-        },1000);
+function checkAnswer(selected) {
+  if(selected === quizData[currentQ].answer) {
+    currentQ++;
+    loadQuestion();
+  } else {
+    let countdown = 5;
+    document.getElementById("timer").innerText = `Wrong! Try again in ${countdown} seconds...`;
+    timer = setInterval(() => {
+      countdown--;
+      if(countdown > 0) {
+        document.getElementById("timer").innerText = `Wrong! Try again in ${countdown} seconds...`;
       } else {
-        optsEl.children[i].classList.add("wrong");
-        let countdown=5;
-        resEl.textContent=`❌ Wrong — try again in ${countdown}s`;
-        let timer=setInterval(()=>{
-          countdown--;
-          resEl.textContent=`❌ Wrong — try again in ${countdown}s`;
-          if(countdown===0){
-            clearInterval(timer);
-            loadQ();
-          }
-        },1000);
+        clearInterval(timer);
+        loadQuestion();
       }
-    }
+    }, 1000);
+  }
+}
 
-    function showCongrats(){
-      quizCard.style.display="none";
-      congrats.style.display="flex";
-    }
+loadQuestion();
+</script>
 
-    loadQ();
-  </script>
 </body>
 </html>
